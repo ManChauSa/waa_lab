@@ -10,7 +10,8 @@ public interface PostService {
     PostDto getById(long id);
     void add(PostDto param);
     void delete(long id);
-    void update(int id, PostDto p);
+    void update(long id, PostDto p);
+
     List<PostDto> getbyAuthor(String author);
     List<PostDto> getbyAuthorContains(String text);
 
