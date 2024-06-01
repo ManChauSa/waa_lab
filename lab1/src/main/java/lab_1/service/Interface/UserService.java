@@ -1,8 +1,6 @@
-package lab_1.service;
+package lab_1.service.Interface;
 
 
-import lab_1.entity.Post;
-import lab_1.entity.User;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.entity.dto.response.UserDto;
 
@@ -13,6 +11,9 @@ public interface UserService {
     UserDto getUserById(int id);
     void saveUser(UserDto userDto);
     List<PostDto> getPostsByUser(int id);
-    List<UserDto> getUsersHaveMoreOnePost();
+    void deleteUser(int id);
+    List<UserDto> getUsersHaveMoreThanPost(int number);
+   // List<UserDto> getUsersOfPostByTitle(String title);
+
 
 }

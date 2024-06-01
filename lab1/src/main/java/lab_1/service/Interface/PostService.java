@@ -1,4 +1,4 @@
-package lab_1.service;
+package lab_1.service.Interface;
 
 import lab_1.entity.Post;
 import lab_1.entity.dto.response.PostDto;
@@ -14,5 +14,5 @@ public interface PostService {
 
     List<PostDto> getbyAuthor(String author);
     List<PostDto> getbyAuthorContains(String text);
-
+    List<PostDto> getPostsByTitleContains(String title);
 }

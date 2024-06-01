@@ -2,7 +2,7 @@ package lab_1.controller;
 
 import lab_1.entity.Post;
 import lab_1.entity.dto.response.PostDto;
-import lab_1.service.PostService;
+import lab_1.service.Interface.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +49,9 @@ public class PostController {
     @GetMapping("/search/{text}")
     public List<PostDto> getPostsByAuthorContains(@PathVariable String text) {
         return postService.getbyAuthorContains(text);
+    }
+    @GetMapping("/search/title/{title}")
+    public List<PostDto> getPostsByTitleContains(@PathVariable String title) {
+        return postService.getPostsByTitleContains(title);
     }
 }

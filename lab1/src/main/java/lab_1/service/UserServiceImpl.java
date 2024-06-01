@@ -3,7 +3,12 @@ package lab_1.service;
 import lab_1.entity.User;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.entity.dto.response.UserDto;
+import lab_1.repo.CommentRepo;
+import lab_1.repo.PostRepo;
 import lab_1.repo.UserRepo;
+import lab_1.service.Interface.CommentService;
+import lab_1.service.Interface.PostService;
+import lab_1.service.Interface.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +18,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
 
     UserRepo userRepo;
     PostService postService;
+    CommentService commentService;
+    @Autowired
+    private PostRepo postRepo;
+    @Autowired
+    private CommentRepo commentRepo;
 
-    UserServiceImpl(UserRepo userRepo, PostService postService){
+    UserServiceImpl(UserRepo userRepo, PostService postService, CommentService commentService){
         this.userRepo = userRepo;
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @Autowired
@@ -51,11 +62,21 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public List<UserDto> getUsersHaveMoreOnePost() {
+    public void deleteUser(int id) {
+        var user = userRepo.findById(id).orElseThrow(()->new RuntimeException("User Not Found"));
+        user.getPosts().forEach(p->{
+            p.getComments().forEach(c->commentRepo.deleteById((int)c.getId()));
+            postRepo.deleteById((int) p.getId());
+        });
+        userRepo.deleteById(id);
+    }
+
+    @Override
+    public List<UserDto> getUsersHaveMoreThanPost(int number) {
         var result = new ArrayList<UserDto>();
         var listUsers = userRepo.findAll();
         for (var user : listUsers) {
-            if (user.getPosts().size() > 1) {
+            if (user.getPosts().size() > number) {
                 result.add(modelMapper.map(user, UserDto.class));
             }
         }

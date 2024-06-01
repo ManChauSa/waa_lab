@@ -3,7 +3,8 @@ package lab_1.controller;
 import lab_1.entity.User;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.entity.dto.response.UserDto;
-import lab_1.service.UserService;
+import lab_1.repo.UserRepo;
+import lab_1.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserRepo userRepo;
+
 
     @GetMapping
     public List<UserDto> getAllUser(){
@@ -38,8 +42,19 @@ public class UserController {
         return userService.getPostsByUser(userId);
     }
 
-    @GetMapping("/filter")
-    public List<UserDto> getUserHaveMoreOnePost(){
-        return userService.getUsersHaveMoreOnePost();
+    @GetMapping("/filter/{number}")
+    public List<UserDto> getUsersHaveMoreThanPost(@PathVariable("number")  int number){
+        return userService.getUsersHaveMoreThanPost(number);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable("id") int id){
+        userService.deleteUser(id);
+    }
+
+    @GetMapping("/post")
+    public List<User> findUsersByPostTitle(@RequestBody String title){
+            return  userRepo.findUsersByPostTitle(title);
     }
 }

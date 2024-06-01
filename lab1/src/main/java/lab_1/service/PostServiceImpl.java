@@ -4,6 +4,7 @@ import lab_1.entity.Post;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.helper.ListMapper;
 import lab_1.repo.PostRepo;
+import lab_1.service.Interface.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 //    @Autowired
     PostRepo postRepo;
 
@@ -90,4 +92,12 @@ public class PostServiceImpl implements PostService{
         return result;
     }
 
+    @Override
+    public List<PostDto> getPostsByTitleContains(String title) {
+        var resutl = postRepo.findAll().stream()
+                .filter(post -> post.getTitle().contains(title))
+                .map(p->modelMapper.map(p, PostDto.class))
+                .collect(Collectors.toList());
+        return resutl;
+    }
 }
