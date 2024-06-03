@@ -11,16 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Post {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private String title;
-    private String content;
-    private String author;
+    private int addressId;
+    private  String city;
+    private String state;
+    private  Integer zipCode;
 
     @OneToMany
-    @JoinColumn(name = "post_id")
-    private List<Comment> comments;
+    @JoinColumn(name = "address_id")
+    private List<Student> students;
 }

@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-    long id;
-    String name;
-//    List<Post> posts;
-
+public class CourseDto {
+     Integer courseId;
+     String name;
 }

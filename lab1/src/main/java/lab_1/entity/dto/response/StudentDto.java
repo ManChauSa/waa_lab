@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
-    long id;
+public class StudentDto {
+    Integer studentId;
     String name;
+    Double gpa;
+    Integer addressId;
 
 }
-

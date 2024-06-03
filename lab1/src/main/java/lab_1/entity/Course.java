@@ -11,15 +11,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "\"user\"")
-public class User {
+public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Integer courseId;
     private String name;
 
     @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Post> posts;
+    @JoinColumn(name = "course_id")
+    private List<Student> students;
+
+    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private  CourseDetail courseDetail;
+
 }
