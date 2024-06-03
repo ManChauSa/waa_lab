@@ -1,5 +1,6 @@
 package lab_1.controller;
 
+import lab_1.aspect.annotation.Log;
 import lab_1.entity.Post;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.service.Interface.PostService;
@@ -15,6 +16,7 @@ public class PostController {
     @Autowired
     PostService postService;
 
+    @Log
     @GetMapping
     public List<Post> getAll(){
         return  postService.getAll();
