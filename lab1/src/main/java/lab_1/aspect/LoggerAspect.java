@@ -1,12 +1,11 @@
 package lab_1.aspect;
 
+import lab_1.entity.ExceptionLogger;
 import lab_1.entity.Logger;
+import lab_1.repo.ExceptionLoggerRepo;
 import lab_1.repo.LoggerRepo;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +17,15 @@ import java.time.LocalTime;
 public class LoggerAspect {
     @Autowired
     private LoggerRepo loggerRepo;
+
+    @Autowired
+    private ExceptionLoggerRepo exceptionLoggerRepo;
+
     private  static  final  String Principle ="fakeUser";
+    private static Logger currentLogger = new Logger();
 
     //This point cut will execute where ever the annotation is placed
-//    @Pointcut("@annotation(lab_1.aspect.annotation.Log)")
-    @Pointcut("execution( * lab_1.controller.*(..))")
+    @Pointcut("@annotation(lab_1.aspect.annotation.Log)")
     public void logAnnotation(){}
 
 
@@ -33,7 +36,19 @@ public class LoggerAspect {
         logger.setPrinciple(Principle);
         logger.setDate(LocalDate.now());
         logger.setTime(LocalTime.now());
-        loggerRepo.save(logger);
+        currentLogger = loggerRepo.save(logger);
+    }
+
+    @AfterThrowing(pointcut = "logAnnotation()", throwing = "exception")
+    public void logException(JoinPoint joinpoint, Exception exception){
+        ExceptionLogger exceptionLogger = new ExceptionLogger();
+        exceptionLogger.setTransactionId(currentLogger.getTransactionId());
+        exceptionLogger.setOperation(joinpoint.getSignature().getName());
+        exceptionLogger.setPrinciple(Principle);
+        exceptionLogger.setDate(LocalDate.now());
+        exceptionLogger.setTime(LocalTime.now());
+        exceptionLogger.setExceptionType(exception.getClass().getName());
+        exceptionLoggerRepo.save(exceptionLogger);
     }
 
     @Before("logAnnotation()")

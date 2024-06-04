@@ -45,7 +45,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(long id) {
-        postRepo.deleteById((int)id);
+        var post = postRepo.findById((int)id).orElseThrow(()->new RuntimeException("User Not Found"));
+
+        postRepo.delete(post);
     }
 
     @Override

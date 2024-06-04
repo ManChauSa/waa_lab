@@ -1,5 +1,6 @@
 package lab_1.controller;
 
+import lab_1.aspect.annotation.ExecutionTime;
 import lab_1.aspect.annotation.Log;
 import lab_1.entity.Post;
 import lab_1.entity.dto.response.PostDto;
@@ -16,12 +17,13 @@ public class PostController {
     @Autowired
     PostService postService;
 
+    @ExecutionTime
     @Log
     @GetMapping
     public List<Post> getAll(){
         return  postService.getAll();
     }
-
+    @Log
     @GetMapping("/{id}")
     public PostDto getbyId(@PathVariable("id") long id){
         return postService.getById(id);
@@ -33,11 +35,13 @@ public class PostController {
         postService.add(p);
     }
 
+    @Log
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") long id){
         postService.delete(id);
     }
+
     @PutMapping("/{id}")
     public void update(@PathVariable("id") int id, @RequestBody PostDto p) {
         postService.update(id,p);
@@ -55,5 +59,10 @@ public class PostController {
     @GetMapping("/search/title/{title}")
     public List<PostDto> getPostsByTitleContains(@PathVariable String title) {
         return postService.getPostsByTitleContains(title);
+    }
+
+    @GetMapping("/error")
+    public String throwError() {
+        throw new RuntimeException("Test Exception");
     }
 }
