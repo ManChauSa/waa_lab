@@ -13,7 +13,5 @@ public interface UserService {
     List<PostDto> getPostsByUser(int id);
     void deleteUser(int id);
     List<UserDto> getUsersHaveMoreThanPost(int number);
-   // List<UserDto> getUsersOfPostByTitle(String title);
-
-
+    List<UserDto> getUsersOfPostByTitle(String title);
 }

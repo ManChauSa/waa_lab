@@ -1,6 +1,5 @@
 package lab_1.controller;
 
-import lab_1.entity.User;
 import lab_1.entity.dto.response.PostDto;
 import lab_1.entity.dto.response.UserDto;
 import lab_1.repo.UserRepo;
@@ -12,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/admin/user")
 public class UserController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    UserRepo userRepo;
-
 
     @GetMapping
     public List<UserDto> getAllUser(){
@@ -54,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/post")
-    public List<User> findUsersByPostTitle(@RequestBody String title){
-            return  userRepo.findUsersByPostTitle(title);
+    public List<UserDto> findUsersByPostTitle(@RequestBody String title){
+            return  userService.getUsersOfPostByTitle(title);
     }
 }

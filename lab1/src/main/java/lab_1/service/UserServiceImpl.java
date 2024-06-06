@@ -82,4 +82,9 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+    @Override
+    public List<UserDto> getUsersOfPostByTitle(String title) {
+        return List.of();
+    }
 }
