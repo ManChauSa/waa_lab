@@ -1,18 +1,51 @@
-import React from "react";
+import axios from "axios";
+import React, { useState ,useEffect} from 'react';
+import Comment from "./Comment";
 
-const PostDetail =(post) =>{
-    console.log(post)
-    return(
+const PostDetail =(props) =>{
+    const [postDetail, setPostDetail] = useState({});
+
+    useEffect (()=>{
+        if(props.postId !== 0){
+            axios.get('http://localhost:8080/post/' + props.postId)
+            .then(response =>{
+                setPostDetail(response.data)
+            })
+            .catch(err => console.log(err.message))
+        }
+    },
+    [props.postId])
+
+    const deletePostClick = (postId)=>{
+        axios.delete('http://localhost:8080/post/' + postId)
+        .then(response =>{
+            window.location.reload();
+        })
+        .catch(err =>{
+            console.error(err);
+        })
+    }
+    if(props.postId !== 0){
+        return(
         <div className="detail_content">
-            <h3 className='detail-title'>{post.post.title}</h3>
-            <h3>{post.post.author}</h3>
-            <p>{post.post.content}</p>
+            <h3 className='detail-title'>{postDetail.title}</h3> 
+            <h3>{postDetail.author}</h3>
+            <p>{postDetail.content}</p>
+            <div className="list_comment">
+                <p>Comments</p>
+                {
+                    postDetail.comments !=  null ? postDetail.comments.map(comment =>{
+                        return <Comment comment = {comment.name} key ={comment.id}/>
+                    }) : <p>No comment</p>
+                }
+            </div>
             <div className="btn_group">                
-                <button onClick={post.post.deleteButtonClicked}>Delete</button>
-                <button onClick={post.post.editButtonClicked}>Edit</button>
+                <button onClick={()=> {deletePostClick(props.postId)}} >Delete</button>
             </div>
         </div>
     )
+
+    }else return null;   
 
 }
 

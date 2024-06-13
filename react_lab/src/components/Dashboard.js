@@ -1,43 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Posts from './post/Posts';
 import '../css/post.css';
 import PostDetail from './post/PostDetail';
+import AddPost from './post/AddPost';
 
 export default function Dashboard() {
-    const [postsState, setPostsState]= useState(
-        [
-            { id: 1, title: "Post 1", author: "Author 1",content:"This is content of post 1"},
-            { id: 2, title: "Post 2", author: "Author 2",content:"This is content of post 2" },
-            { id: 3, title: "Post 3", author: "Author 3",content:"This is content of post 3" }
-        ]
-    )
-    const [newTitle, setNewTitle] = useState('');
+    const [fetchFlag, setFetchflag] = useState(true);
 
-    const updateFirstPostTitle = () => {
-        setPostsState((prevPosts) => [
-        { ...prevPosts[0], title: newTitle },
-        ...prevPosts.slice(1),
-        ]);
-    };
+    const changeFetchFlag = () => {
+        setFetchflag(!fetchFlag);
+    }
+    useEffect(() => {
+        return () => {
+          console.log("Something was unmounted");
+        };
+      }, [fetchFlag]);
 
-    const [selectedPost, setSelectedPost] = useState(null);
+      const [selectedState, setSelectedState] = useState(0);
+    const setSelected = (id) => {
+        setSelectedState(id);
+    }
 
     return (
         <div className='dashboard'>
             <div className='list_post'>        
-                <Posts posts={postsState} onPostClick={setSelectedPost} />   
-            </div>
-            <div className='update_title'>
-                <input
-                    type="text"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="Enter new title"
-                />
-                <button onClick={updateFirstPostTitle}>Update First Post Title</button>
+                <Posts  
+                setSelected={setSelected}
+                fetchFlag ={fetchFlag}
+                />   
             </div>
             <div className='post_detail'>   
-                {selectedPost && <PostDetail post={selectedPost} />}
+                <PostDetail 
+                    postId={selectedState} 
+                    changeFetchFlag={changeFetchFlag} />
+            </div>
+            <div className='add_post'>
+                <AddPost/>
             </div>
         </div>
     );

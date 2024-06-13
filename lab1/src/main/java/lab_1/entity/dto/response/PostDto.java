@@ -1,9 +1,12 @@
 package lab_1.entity.dto.response;
 
+import lab_1.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,4 +17,5 @@ public class PostDto {
     String title;
     String content;
     String author;
+    List<Comment> comments;
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/post")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
     @Autowired
     PostService postService;
@@ -22,7 +23,8 @@ public class PostController {
 
     @GetMapping("/{id}")
     public PostDto getbyId(@PathVariable("id") long id){
-        return postService.getById(id);
+        var result = postService.getById(id);
+        return result;
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
