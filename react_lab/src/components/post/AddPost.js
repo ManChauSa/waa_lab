@@ -3,6 +3,7 @@ import React from "react";
 import { useRef } from 'react';
 
 const AddPost =(props)=>{
+    //add new post use UseRef
     const newPostForm = useRef();
     const addPost =()=>{
         const form = newPostForm.current;

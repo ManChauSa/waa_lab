@@ -1,20 +1,24 @@
 import axios from "axios";
-import React, { useState ,useEffect} from 'react';
+import React, { useState ,useEffect, useContext} from 'react';
 import Comment from "./Comment";
+import { SelectedPostId } from "../../context/SelectedPostId";
 
 const PostDetail =(props) =>{
     const [postDetail, setPostDetail] = useState({});
+    const selectedPostId = useContext(SelectedPostId);
+
+    console.log(selectedPostId.selectedPostIdState)
 
     useEffect (()=>{
-        if(props.postId !== 0){
-            axios.get('http://localhost:8080/post/' + props.postId)
+        if(selectedPostId.selectedPostIdState !== 0){
+            axios.get('http://localhost:8080/post/' + selectedPostId.selectedPostIdState)
             .then(response =>{
                 setPostDetail(response.data)
             })
             .catch(err => console.log(err.message))
         }
     },
-    [props.postId])
+    [selectedPostId.selectedPostIdState])
 
     const deletePostClick = (postId)=>{
         axios.delete('http://localhost:8080/post/' + postId)
@@ -25,7 +29,7 @@ const PostDetail =(props) =>{
             console.error(err);
         })
     }
-    if(props.postId !== 0){
+    if(selectedPostId.selectedPostIdState !== 0){
         return(
         <div className="detail_content">
             <h3 className='detail-title'>{postDetail.title}</h3> 
@@ -40,7 +44,7 @@ const PostDetail =(props) =>{
                 }
             </div>
             <div className="btn_group">                
-                <button onClick={()=> {deletePostClick(props.postId)}} >Delete</button>
+                <button onClick={()=> {deletePostClick(selectedPostId.selectedPostIdState)}} >Delete</button>
             </div>
         </div>
     )
